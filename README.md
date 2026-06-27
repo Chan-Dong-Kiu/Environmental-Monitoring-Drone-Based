@@ -47,6 +47,25 @@ Vì dự án được chia thành 3 thư mục PlatformIO riêng biệt, bạn c
 
 ---
 
+## 🛠 Hướng dẫn Nạp Code bằng Arduino IDE (Phiên bản Cổ điển)
+
+Nếu bạn gặp lỗi không thể cài đặt được PlatformIO, tôi đã chuẩn bị sẵn một phiên bản mã nguồn được tinh chỉnh riêng cho **Arduino IDE** nằm trong thư mục `Arduino_Version`. Cấu trúc của phiên bản này đã được "làm phẳng" hoàn toàn để dễ dàng biên dịch.
+
+### Bước 1: Cài đặt Thư viện trên Arduino IDE
+Khác với PlatformIO tự động tải thư viện, với Arduino IDE bạn **phải tự cài đặt** thủ công. Mở Arduino IDE, vào **Sketch -> Include Library -> Manage Libraries...** và tìm cài đặt chính xác các thư viện sau:
+- **Mạch FC**: Cài thư viện `MPU6050` (của ElectronicCats).
+- **Mạch Payload**: Cài `Adafruit BMP280 Library`, `Adafruit Unified Sensor`, và `DHT sensor library` (của Adafruit).
+- **Mạch GCS**: Cài `ThingSpeak` (của MathWorks), `ESPAsyncWebServer`, `AsyncTCP`, và `ArduinoJson` (Cài bản 6.x).
+
+### Bước 2: Nạp Code
+1. Truy cập vào thư mục `Arduino_Version` và chọn mạch muốn nạp (ví dụ `Arduino_FC`).
+2. Mở file `.ino` bên trong thư mục đó (ví dụ `Arduino_FC.ino`) bằng Arduino IDE.
+3. Vào **Tools -> Board** chọn `ESP32 Dev Module`. Vào **Tools -> Port** chọn cổng COM của mạch.
+4. Đừng quên sửa thông tin WiFi trong file `gcs_config.h` (đối với mạch GCS) ngay trên giao diện Arduino IDE.
+5. Nhấn nút **Upload** (Mũi tên sang phải) để nạp code. Lặp lại quá trình này cho cả 3 mạch.
+
+---
+
 ## 🎮 Hướng dẫn Sử dụng (Giao diện Web Gamepad)
 
 Khi cả 3 mạch đã được cấp nguồn và hoạt động:

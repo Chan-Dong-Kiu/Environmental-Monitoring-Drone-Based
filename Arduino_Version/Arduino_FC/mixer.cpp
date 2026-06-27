@@ -1,4 +1,4 @@
-﻿#include "mixer.h"
+#include "mixer.h"
 #include "flight_params.h"
 
 void mixer_compute(float throttle, float pid_roll, float pid_pitch, float pid_yaw, 

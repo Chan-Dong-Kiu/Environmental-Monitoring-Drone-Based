@@ -1,4 +1,4 @@
-﻿#include "thingspeak_client.h"
+#include "thingspeak_client.h"
 #include "gcs_config.h"
 #include <WiFi.h>
 #include <ThingSpeak.h>

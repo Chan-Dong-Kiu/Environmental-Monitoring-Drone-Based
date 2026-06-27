@@ -1,4 +1,4 @@
-﻿#include "wifi_manager.h"
+#include "wifi_manager.h"
 #include "gcs_config.h"
 #include <WiFi.h>
 

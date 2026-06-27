@@ -1,4 +1,4 @@
-﻿#ifndef MIXER_H
+#ifndef MIXER_H
 #define MIXER_H
 #include <stdint.h>
 

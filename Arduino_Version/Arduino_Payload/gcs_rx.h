@@ -1,4 +1,4 @@
-﻿#ifndef GCS_RX_H
+#ifndef GCS_RX_H
 #define GCS_RX_H
 
 void gcs_rx_init();

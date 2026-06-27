@@ -1,4 +1,4 @@
-﻿#include <Arduino.h>
+#include <Arduino.h>
 #include "pins.h"
 #include "flight_params.h"
 #include "motor_driver.h"

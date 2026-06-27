@@ -1,4 +1,4 @@
-﻿#include "altimeter.h"
+#include "altimeter.h"
 #include "sys_config.h"
 
 static volatile uint32_t echo_start = 0;

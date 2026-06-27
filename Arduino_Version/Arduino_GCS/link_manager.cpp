@@ -1,4 +1,4 @@
-﻿#include "link_manager.h"
+#include "link_manager.h"
 #include "gcs_config.h"
 #include "thingspeak_client.h"
 #include <Arduino.h>

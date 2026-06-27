@@ -1,4 +1,4 @@
-﻿#include "payload_link.h"
+#include "payload_link.h"
 #include "pins.h"
 #include "flight_params.h"
 

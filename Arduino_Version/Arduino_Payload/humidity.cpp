@@ -1,4 +1,4 @@
-﻿#include "humidity.h"
+#include "humidity.h"
 #include "sys_config.h"
 #include <DHT.h>
 

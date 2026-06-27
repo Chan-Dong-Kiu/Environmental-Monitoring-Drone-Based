@@ -1,4 +1,4 @@
-﻿#ifndef FLIGHT_PARAMS_H
+#ifndef FLIGHT_PARAMS_H
 #define FLIGHT_PARAMS_H
 
 // PID Constants (Tuning required)

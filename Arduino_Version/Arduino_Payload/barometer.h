@@ -1,4 +1,4 @@
-﻿#ifndef BAROMETER_H
+#ifndef BAROMETER_H
 #define BAROMETER_H
 
 bool barometer_init();

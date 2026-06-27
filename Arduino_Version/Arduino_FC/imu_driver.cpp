@@ -1,4 +1,4 @@
-﻿#include "imu_driver.h"
+#include "imu_driver.h"
 #include "pins.h"
 #include <Wire.h>
 #include "MPU6050.h"

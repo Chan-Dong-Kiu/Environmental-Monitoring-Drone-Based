@@ -1,4 +1,4 @@
-﻿#ifndef LINK_MANAGER_H
+#ifndef LINK_MANAGER_H
 #define LINK_MANAGER_H
 #include "protocol.h"
 

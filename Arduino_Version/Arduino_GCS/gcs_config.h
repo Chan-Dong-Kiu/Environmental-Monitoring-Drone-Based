@@ -1,4 +1,4 @@
-﻿#ifndef GCS_CONFIG_H
+#ifndef GCS_CONFIG_H
 #define GCS_CONFIG_H
 
 // WiFi Credentials (User must update these)

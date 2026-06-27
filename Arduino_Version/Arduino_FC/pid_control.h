@@ -1,4 +1,4 @@
-﻿#ifndef PID_CONTROL_H
+#ifndef PID_CONTROL_H
 #define PID_CONTROL_H
 
 struct PIDState {

@@ -1,4 +1,4 @@
-﻿#ifndef THINGSPEAK_CLIENT_H
+#ifndef THINGSPEAK_CLIENT_H
 #define THINGSPEAK_CLIENT_H
 #include "protocol.h"
 

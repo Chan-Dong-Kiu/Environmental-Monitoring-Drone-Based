@@ -1,4 +1,4 @@
-﻿#ifndef FC_BRIDGE_H
+#ifndef FC_BRIDGE_H
 #define FC_BRIDGE_H
 #include "protocol.h"
 

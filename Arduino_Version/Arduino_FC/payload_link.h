@@ -1,4 +1,4 @@
-﻿#ifndef PAYLOAD_LINK_H
+#ifndef PAYLOAD_LINK_H
 #define PAYLOAD_LINK_H
 #include "protocol.h"
 #include <Arduino.h>

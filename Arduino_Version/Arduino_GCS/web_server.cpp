@@ -1,4 +1,4 @@
-﻿#include "web_server.h"
+#include "web_server.h"
 #include "index_html.h"
 #include "link_manager.h"
 #include <ESPAsyncWebServer.h>

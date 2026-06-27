@@ -1,4 +1,4 @@
-﻿#include "gcs_rx.h"
+#include "gcs_rx.h"
 #include "sys_config.h"
 #include "protocol.h"
 #include "atomizer.h"

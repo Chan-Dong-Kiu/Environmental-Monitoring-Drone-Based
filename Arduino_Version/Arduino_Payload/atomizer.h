@@ -1,4 +1,4 @@
-﻿#ifndef ATOMIZER_H
+#ifndef ATOMIZER_H
 #define ATOMIZER_H
 #include <Arduino.h>
 

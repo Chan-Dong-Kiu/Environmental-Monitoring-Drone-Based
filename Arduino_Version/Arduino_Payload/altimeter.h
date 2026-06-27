@@ -1,4 +1,4 @@
-﻿#ifndef ALTIMETER_H
+#ifndef ALTIMETER_H
 #define ALTIMETER_H
 #include <Arduino.h>
 

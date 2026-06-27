@@ -1,4 +1,4 @@
-﻿#include "atomizer.h"
+#include "atomizer.h"
 #include "sys_config.h"
 
 static bool is_on = false;

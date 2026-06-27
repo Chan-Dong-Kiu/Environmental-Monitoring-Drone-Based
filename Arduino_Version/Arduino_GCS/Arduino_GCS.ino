@@ -1,4 +1,4 @@
-﻿#include <Arduino.h>
+#include <Arduino.h>
 #include "wifi_manager.h"
 #include "thingspeak_client.h"
 #include "web_server.h"

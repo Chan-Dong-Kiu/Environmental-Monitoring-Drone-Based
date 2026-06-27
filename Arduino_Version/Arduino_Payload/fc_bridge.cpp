@@ -1,4 +1,4 @@
-﻿#include "fc_bridge.h"
+#include "fc_bridge.h"
 #include "sys_config.h"
 #include <Arduino.h>
 

@@ -1,4 +1,4 @@
-﻿#include "telemetry_tx.h"
+#include "telemetry_tx.h"
 #include "sys_config.h"
 #include "protocol.h"
 #include "altimeter.h"

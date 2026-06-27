@@ -1,4 +1,4 @@
-﻿#include "motor_driver.h"
+#include "motor_driver.h"
 #include "pins.h"
 
 // ESCs typically expect 50Hz (20ms period) to 400Hz. Let's use 250Hz.

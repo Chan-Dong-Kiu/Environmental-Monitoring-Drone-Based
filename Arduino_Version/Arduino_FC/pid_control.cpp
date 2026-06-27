@@ -1,4 +1,4 @@
-﻿#include "pid_control.h"
+#include "pid_control.h"
 
 void pid_init(PIDState* pid, float kp, float ki, float kd) {
     pid->kp = kp;

@@ -1,4 +1,4 @@
-﻿#ifndef PINS_H
+#ifndef PINS_H
 #define PINS_H
 
 // ESC PWM Pins

@@ -1,4 +1,4 @@
-﻿#include <Arduino.h>
+#include <Arduino.h>
 #include "sys_config.h"
 #include "altimeter.h"
 #include "barometer.h"

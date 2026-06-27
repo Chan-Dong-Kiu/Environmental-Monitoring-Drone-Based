@@ -1,4 +1,4 @@
-﻿#include "barometer.h"
+#include "barometer.h"
 #include "sys_config.h"
 #include <Wire.h>
 #include <Adafruit_BMP280.h>

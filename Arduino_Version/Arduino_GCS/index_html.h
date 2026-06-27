@@ -41,6 +41,7 @@ const char INDEX_HTML[] PROGMEM = R"=====(
   
   <script>
     let atomizerState = 0;
+    let cmd = { roll: 0, pitch: 0, yaw: 0, throttle: 1000, atomizer: 0 };
     
     function toggleAtomizer() {
       atomizerState = 1 - atomizerState;
@@ -50,7 +51,63 @@ const char INDEX_HTML[] PROGMEM = R"=====(
       sendCmd();
     }
 
-    let cmd = { roll: 0, pitch: 0, yaw: 0, throttle: 1000, atomizer: 0 };
+    function setupJoystick(zoneId, knobId, isLeft) {
+      const zone = document.getElementById(zoneId);
+      const knob = document.getElementById(knobId);
+      let active = false;
+      let center = 75; 
+      let maxDist = 50; 
+      
+      function moveKnob(e) {
+        if (!active) return;
+        let rect = zone.getBoundingClientRect();
+        let clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        let clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        
+        let x = clientX - rect.left - center;
+        let y = clientY - rect.top - center;
+        let distance = Math.sqrt(x*x + y*y);
+        
+        if (distance > maxDist) {
+          x = (x / distance) * maxDist;
+          y = (y / distance) * maxDist;
+        }
+        
+        knob.style.transform = `translate(${x}px, ${y}px)`;
+        
+        let normX = x / maxDist;
+        let normY = -y / maxDist; 
+        
+        if (isLeft) {
+          cmd.yaw = normX * 30; 
+          cmd.throttle = 1000 + (normY + 1) * 400; // 1000 to 1800
+        } else {
+          cmd.roll = normX * 30;
+          cmd.pitch = normY * 30;
+        }
+      }
+      
+      function startKnob(e) { active = true; moveKnob(e); }
+      function stopKnob(e) { 
+        active = false; 
+        knob.style.transform = `translate(0px, 0px)`; 
+        if(!isLeft) {
+          cmd.roll = 0; cmd.pitch = 0;
+        } else {
+          cmd.yaw = 0; cmd.throttle = 1000;
+        }
+      }
+      
+      zone.addEventListener('mousedown', startKnob);
+      document.addEventListener('mousemove', moveKnob);
+      document.addEventListener('mouseup', stopKnob);
+      zone.addEventListener('touchstart', startKnob, {passive: false});
+      document.addEventListener('touchmove', function(e){if(active) e.preventDefault(); moveKnob(e);}, {passive: false});
+      document.addEventListener('touchend', stopKnob);
+    }
+    
+    setupJoystick('joy-left', 'knob-left', true);
+    setupJoystick('joy-right', 'knob-right', false);
     
     function sendCmd() {
       cmd.atomizer = atomizerState;
@@ -61,7 +118,7 @@ const char INDEX_HTML[] PROGMEM = R"=====(
       }).catch(e => console.error(e));
     }
 
-    setInterval(sendCmd, 200);
+    setInterval(sendCmd, 100);
   </script>
 </body>
 </html>

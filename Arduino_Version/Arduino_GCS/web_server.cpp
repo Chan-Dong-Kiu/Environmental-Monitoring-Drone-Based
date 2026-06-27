@@ -22,6 +22,7 @@ void web_server_init() {
         cmd.yaw = jsonObj["yaw"] | 0.0f;
         cmd.throttle = jsonObj["throttle"] | 1000.0f;
         cmd.atomizer_state = jsonObj["atomizer"] | 0;
+        cmd.env_mode = jsonObj["env_mode"] | 0;
         cmd.timestamp = millis();
         
         link_manager_send_cmd(cmd);

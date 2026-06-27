@@ -37,17 +37,27 @@ const char INDEX_HTML[] PROGMEM = R"=====(
   </div>
   <div class="controls">
     <button id="btn-atomizer" onclick="toggleAtomizer()">Atomizer: OFF</button>
+    <button id="btn-env" onclick="toggleEnv()" style="margin-left: 10px; background: #607d8b;">Env Mode: OFF</button>
   </div>
   
   <script>
     let atomizerState = 0;
-    let cmd = { roll: 0, pitch: 0, yaw: 0, throttle: 1000, atomizer: 0 };
+    let envState = 0;
+    let cmd = { roll: 0, pitch: 0, yaw: 0, throttle: 1000, atomizer: 0, env_mode: 0 };
     
     function toggleAtomizer() {
       atomizerState = 1 - atomizerState;
       const btn = document.getElementById('btn-atomizer');
       btn.innerText = 'Atomizer: ' + (atomizerState ? 'ON' : 'OFF');
       btn.className = atomizerState ? 'active' : '';
+      sendCmd();
+    }
+
+    function toggleEnv() {
+      envState = 1 - envState;
+      const btn = document.getElementById('btn-env');
+      btn.innerText = 'Env Mode: ' + (envState ? 'ON' : 'OFF');
+      btn.style.background = envState ? '#00e5ff' : '#607d8b';
       sendCmd();
     }
 
@@ -111,6 +121,7 @@ const char INDEX_HTML[] PROGMEM = R"=====(
     
     function sendCmd() {
       cmd.atomizer = atomizerState;
+      cmd.env_mode = envState;
       fetch('/cmd', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

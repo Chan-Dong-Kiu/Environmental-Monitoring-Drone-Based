@@ -13,6 +13,7 @@ struct GCSCommand {
     float yaw;
     float throttle;
     uint8_t atomizer_state;
+    uint8_t env_mode;
     uint32_t timestamp;
 };
 
@@ -27,6 +28,7 @@ struct TelemetryData {
     float pitch;
     float yaw; // From FC
     uint8_t atomizer_state;
+    uint8_t env_mode;
 };
 
 // Command from Payload -> FC (via UART)

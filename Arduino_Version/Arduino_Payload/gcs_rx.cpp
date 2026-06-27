@@ -6,6 +6,7 @@
 #include <Arduino.h>
 
 HardwareSerial HC12Serial(2);
+uint8_t g_env_mode = 0;
 
 void gcs_rx_init() {
     HC12Serial.begin(9600, SERIAL_8N1, HC12_RX_PIN, HC12_TX_PIN);
@@ -30,6 +31,7 @@ void gcs_rx_task(void* pvParameters) {
             if (cmd.atomizer_state != atomizer_get_state()) {
                 atomizer_set(cmd.atomizer_state > 0);
             }
+            g_env_mode = cmd.env_mode;
             
             // Clear backlog if any
             while(HC12Serial.available()) {

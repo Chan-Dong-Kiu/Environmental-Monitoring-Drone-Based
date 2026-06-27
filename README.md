@@ -26,12 +26,24 @@ Trước khi nạp code cho mạch GCS, bạn **bắt buộc** phải cấu hìn
    #define WIFI_PASS "MẬT_KHẨU_WIFI"
    ```
 
-### Bước 3: Nạp Code cho từng mạch ESP32
-Dự án được chia thành 3 thư mục PlatformIO riêng biệt. Bạn cần làm các bước sau cho **từng mạch**:
-1. Trong VSCode, chọn `File` -> `Open Folder...` và mở lần lượt từng thư mục: `firmware_esp32_fc`, `firmware_esp32_payload`, `firmware_esp32_gcs`.
-2. Cắm cáp USB nối mạch ESP32 tương ứng vào máy tính.
-3. Nhấn vào biểu tượng hình mũi tên (Upload) ở thanh trạng thái (Status Bar) dưới cùng của VSCode để biên dịch và nạp code.
-4. Lặp lại quá trình này cho cả 3 mạch.
+### Bước 3: Hướng dẫn Nạp Code chi tiết (VSCode + PlatformIO)
+
+Vì dự án được chia thành 3 thư mục PlatformIO riêng biệt, bạn cần thực hiện thao tác nạp code cho **từng mạch ESP32** theo các bước cực kỳ cụ thể sau:
+
+1. **Cài đặt Driver USB (Nếu cần)**: Đảm bảo máy tính đã cài đặt Driver CH340 hoặc CP2102 (tuỳ loại mạch ESP32) để máy tính nhận diện được cổng COM khi cắm cáp.
+2. **Mở thư mục độc lập**: 
+   - Trong VSCode, chọn `File` -> `Open Folder...`. 
+   - Mở **đúng** thư mục của mạch bạn muốn nạp (Ví dụ: Mở thư mục `firmware_esp32_fc`, **KHÔNG** mở toàn bộ thư mục tổng chứa cả 3 dự án). Điều này giúp PlatformIO nhận diện chính xác file cấu hình `platformio.ini`.
+3. **Chờ PlatformIO khởi tạo**: Lần đầu tiên mở thư mục, hãy đợi khoảng 1-2 phút để PlatformIO tự động tải về các thư viện cần thiết (như MPU6050, DHT, ThingSpeak,...) đã được tôi khai báo sẵn.
+4. **Kết nối phần cứng**: Cắm cáp USB (đảm bảo là cáp truyền dữ liệu, không phải chỉ cáp sạc) nối mạch ESP32 tương ứng vào máy tính.
+5. **Biên dịch và Nạp (Build & Upload)**:
+   - Nhìn xuống **Thanh trạng thái (Status Bar)** màu xanh dương ở tận cùng bên dưới của VSCode.
+   - Nhấn vào biểu tượng **dấu check (✓)** để **Biên dịch (Build)** thử xem có lỗi cú pháp hay thiếu thư viện nào không.
+   - Nếu Build báo thành công (SUCCESS), hãy nhấn vào biểu tượng **mũi tên hướng sang phải (→)** để **Nạp code (Upload)** vào mạch ESP32.
+6. **Kiểm tra hoạt động (Serial Monitor)**:
+   - Nhấn vào biểu tượng **phích cắm (🔌)** ở thanh trạng thái dưới cùng để mở màn hình Serial Monitor. 
+   - Tại đây sẽ hiển thị các thông tin nhật ký hoạt động (Baudrate `115200`), giúp bạn biết ESP32 đã kết nối WiFi hay đang đọc cảm biến thành công chưa.
+7. **Lặp lại**: Rút mạch vừa nạp ra, cắm mạch tiếp theo vào và lặp lại từ Bước 2 cho 2 mạch còn lại.
 
 ---
 

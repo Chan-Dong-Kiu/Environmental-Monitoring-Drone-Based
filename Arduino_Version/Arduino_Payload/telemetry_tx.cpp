@@ -21,6 +21,12 @@ void telemetry_tx_task(void* pvParameters) {
             altimeter_trigger();
             vTaskDelay(pdMS_TO_TICKS(20)); // wait for echo
             tdata.distance_srf05 = altimeter_get_distance();
+            
+            Serial.println("--- SENSOR DATA ---");
+            Serial.print("BMP280  - Temp: "); Serial.print(tdata.temp_bmp); Serial.print(" C, Press: "); Serial.print(tdata.pressure_bmp); Serial.println(" hPa");
+            Serial.print("DHT11   - Temp: "); Serial.print(tdata.temp_dht); Serial.print(" C, Hum: "); Serial.print(tdata.hum_dht); Serial.println(" %");
+            Serial.print("SRF05   - Dist: "); Serial.print(tdata.distance_srf05); Serial.println(" cm");
+            Serial.println("-------------------");
         } else {
             tdata.temp_bmp = 0;
             tdata.pressure_bmp = 0;

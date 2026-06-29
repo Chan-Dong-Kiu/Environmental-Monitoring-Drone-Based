@@ -10,18 +10,35 @@
 
 void setup() {
     Serial.begin(115200);
+    Serial.println("================================");
+    Serial.println("   PAYLOAD SYSTEM STARTING...   ");
+    Serial.println("================================");
     
     // Init Actuators
     atomizer_init();
+    Serial.println("[OK] Atomizer Initialized");
     
     // Init Sensors
     altimeter_init();
-    barometer_init();
+    Serial.println("[OK] Altimeter (SRF05) Initialized");
+    
+    if (barometer_init()) {
+        Serial.println("[OK] Barometer (BMP280) Initialized");
+    } else {
+        Serial.println("[ERROR] BMP280 initialization failed! Check wiring.");
+    }
+    
     humidity_init();
+    Serial.println("[OK] Humidity (DHT11) Initialized");
     
     // Init Comms
     fc_bridge_init();
+    Serial.println("[OK] FC UART Bridge Initialized");
+    
     gcs_rx_init();
+    Serial.println("[OK] GCS HC-12 Radio Initialized");
+    
+    Serial.println("System Ready. Starting FreeRTOS Tasks...");
     
     // Start FreeRTOS Tasks
     xTaskCreatePinnedToCore(

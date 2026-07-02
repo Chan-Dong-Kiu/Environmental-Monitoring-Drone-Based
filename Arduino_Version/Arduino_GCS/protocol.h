@@ -23,7 +23,7 @@ struct TelemetryData {
     float pressure_bmp;
     float temp_dht;
     float hum_dht;
-    float distance_srf05;
+    float altitude;
     float roll;
     float pitch;
     float yaw; // From FC

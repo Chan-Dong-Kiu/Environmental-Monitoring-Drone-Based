@@ -18,7 +18,7 @@ void thingspeak_update(TelemetryData data) {
     ThingSpeak.setField(2, data.pressure_bmp);
     ThingSpeak.setField(3, data.temp_dht);
     ThingSpeak.setField(4, data.hum_dht);
-    ThingSpeak.setField(5, data.distance_srf05);
+    ThingSpeak.setField(5, data.altitude);
     
     int x = ThingSpeak.writeFields(TS_CHANNEL_ID, TS_WRITE_API_KEY);
     if(x == 200){

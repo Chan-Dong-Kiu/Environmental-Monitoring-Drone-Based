@@ -10,11 +10,14 @@ void link_manager_init() {
 }
 
 static uint32_t last_rx_time = 0;
+static TelemetryData latest_tdata;
 
 void link_manager_update() {
     TelemetryData tdata;
     if (HC12Serial.available() >= sizeof(TelemetryData)) {
         HC12Serial.readBytes((uint8_t*)&tdata, sizeof(TelemetryData));
+        
+        latest_tdata = tdata; // Store for web UI
         
         Serial.println("[HC-12 RX] Received Telemetry Data from Payload!");
         last_rx_time = millis();
@@ -51,3 +54,7 @@ void link_manager_send_cmd(GCSCommand cmd) {
     }
 }
 
+
+TelemetryData link_manager_get_telemetry() {
+    return latest_tdata;
+}

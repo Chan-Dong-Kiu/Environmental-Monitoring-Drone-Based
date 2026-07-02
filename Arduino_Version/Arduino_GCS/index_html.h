@@ -15,12 +15,47 @@ const char INDEX_HTML[] PROGMEM = R"=====(
   .joystick-zone { width: 150px; height: 150px; background: #333; border-radius: 50%; position: relative; border: 2px solid #555; }
   .joystick-knob { width: 50px; height: 50px; background: #00e5ff; border-radius: 50%; position: absolute; top: 50px; left: 50px; pointer-events: none; }
   .controls { margin-top: 30px; }
-  button { background: #ff3d00; color: white; border: none; padding: 15px 30px; font-size: 18px; border-radius: 8px; cursor: pointer; transition: 0.2s; }
-  button.active { background: #00e5ff; }
+  button { background: #ff3d00; color: white; border: none; padding: 15px 30px; font-size: 18px; border-radius: 8px; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 15px rgba(255,61,0,0.4); }
+  button.active { background: #00e5ff; box-shadow: 0 4px 15px rgba(0,229,255,0.4); color: #000; font-weight: bold; }
+  
+  .telemetry-panel {
+    display: flex;
+    justify-content: space-around;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 15px;
+    margin: 10px 0 20px 0;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  }
+  .telemetry-item { display: flex; flex-direction: column; }
+  .telemetry-label { font-size: 12px; color: #aaa; letter-spacing: 1px; }
+  .telemetry-value { font-size: 22px; font-weight: bold; color: #00e5ff; text-shadow: 0 0 10px rgba(0,229,255,0.5); }
 </style>
 </head>
 <body>
   <h1>GCS Flight Controller</h1>
+  
+  <div class="telemetry-panel">
+    <div class="telemetry-item">
+      <span class="telemetry-label">ALTITUDE</span>
+      <span class="telemetry-value" id="val-alt">-- m</span>
+    </div>
+    <div class="telemetry-item">
+      <span class="telemetry-label">TEMP</span>
+      <span class="telemetry-value" id="val-temp">-- &deg;C</span>
+    </div>
+    <div class="telemetry-item">
+      <span class="telemetry-label">HUMIDITY</span>
+      <span class="telemetry-value" id="val-hum">-- %</span>
+    </div>
+    <div class="telemetry-item">
+      <span class="telemetry-label">PRESSURE</span>
+      <span class="telemetry-value" id="val-press">-- hPa</span>
+    </div>
+  </div>
+  
   <div class="container">
     <div>
       <p>Throttle / Yaw</p>
@@ -129,7 +164,20 @@ const char INDEX_HTML[] PROGMEM = R"=====(
       }).catch(e => console.error(e));
     }
 
+    function fetchTelemetry() {
+      fetch('/telemetry')
+        .then(r => r.json())
+        .then(data => {
+          document.getElementById('val-temp').innerText = (data.temp > 0 ? data.temp.toFixed(1) : '--') + ' °C';
+          document.getElementById('val-hum').innerText = (data.hum > 0 ? data.hum.toFixed(1) : '--') + ' %';
+          document.getElementById('val-press').innerText = (data.pressure > 0 ? data.pressure.toFixed(1) : '--') + ' hPa';
+          document.getElementById('val-alt').innerText = (data.altitude > 0 ? (data.altitude / 100.0).toFixed(2) : '--') + ' m';
+        })
+        .catch(e => console.error(e));
+    }
+
     setInterval(sendCmd, 100);
+    setInterval(fetchTelemetry, 1000);
   </script>
 </body>
 </html>

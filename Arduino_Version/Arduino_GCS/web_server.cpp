@@ -12,6 +12,20 @@ void web_server_init() {
         request->send_P(200, "text/html", INDEX_HTML);
     });
 
+    server.on("/telemetry", HTTP_GET, [](AsyncWebServerRequest *request){
+        TelemetryData tdata = link_manager_get_telemetry();
+        
+        StaticJsonDocument<256> doc;
+        doc["temp"] = tdata.temp_bmp > 0 ? tdata.temp_bmp : tdata.temp_dht;
+        doc["hum"] = tdata.hum_dht;
+        doc["pressure"] = tdata.pressure_bmp;
+        doc["altitude"] = tdata.altitude;
+        
+        String response;
+        serializeJson(doc, response);
+        request->send(200, "application/json", response);
+    });
+
     AsyncCallbackJsonWebHandler* handler = new AsyncCallbackJsonWebHandler("/cmd", [](AsyncWebServerRequest *request, JsonVariant &json) {
         JsonObject jsonObj = json.as<JsonObject>();
         

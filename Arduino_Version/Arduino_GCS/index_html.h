@@ -54,6 +54,10 @@ const char INDEX_HTML[] PROGMEM = R"=====(
       <span class="telemetry-label">PRESSURE</span>
       <span class="telemetry-value" id="val-press">-- hPa</span>
     </div>
+    <div class="telemetry-item">
+      <span class="telemetry-label">FORECAST</span>
+      <span class="telemetry-value" id="val-forecast">--</span>
+    </div>
   </div>
   
   <div class="container">
@@ -164,6 +168,39 @@ const char INDEX_HTML[] PROGMEM = R"=====(
       }).catch(e => console.error(e));
     }
 
+    let pressureHistory = [];
+
+    function updateForecast(pressure, humidity) {
+      if (!pressure || pressure <= 0) {
+        document.getElementById('val-forecast').innerText = '--';
+        return;
+      }
+      
+      let now = Date.now();
+      pressureHistory.push({ t: now, p: pressure });
+      // Keep last 60 seconds of history for quick demo (ideally should be hours)
+      pressureHistory = pressureHistory.filter(item => (now - item.t) <= 60000);
+      
+      let trend = 'stable';
+      if (pressureHistory.length > 5) {
+        let old = pressureHistory[0].p;
+        let diff = pressure - old;
+        if (diff > 0.3) trend = 'rising';
+        else if (diff < -0.3) trend = 'dropping';
+        if (diff < -1.0) trend = 'storm_drop'; // simulated rapid drop
+      }
+      
+      let forecast = "Cloudy ☁️";
+      if (trend === 'storm_drop') {
+        forecast = "Storm ⛈️";
+      } else if (pressure >= 1013 && trend !== 'dropping' && humidity < 65) {
+        forecast = "Sunny ☀️";
+      } else if (pressure <= 1010 && trend !== 'rising' && humidity > 85) {
+        forecast = "Rainy 🌧️";
+      }
+      document.getElementById('val-forecast').innerText = forecast;
+    }
+
     function fetchTelemetry() {
       fetch('/telemetry')
         .then(r => r.json())
@@ -172,6 +209,7 @@ const char INDEX_HTML[] PROGMEM = R"=====(
           document.getElementById('val-hum').innerText = (data.hum > 0 ? data.hum.toFixed(1) : '--') + ' %';
           document.getElementById('val-press').innerText = (data.pressure > 0 ? data.pressure.toFixed(1) : '--') + ' hPa';
           document.getElementById('val-alt').innerText = (data.altitude > 0 ? (data.altitude / 100.0).toFixed(2) : '--') + ' m';
+          updateForecast(data.pressure, data.hum);
         })
         .catch(e => console.error(e));
     }

@@ -15,7 +15,7 @@
 
 // BMP280 I2C
 #define I2C_SDA_PIN 21
-#define I2C_SCL_PIN 12
+#define I2C_SCL_PIN 22 // Changed from 12 to 22 to fix strapping pin conflict
 
 // HY-SRF05
 #define TRIG_PIN 18

@@ -28,8 +28,8 @@ void telemetry_tx_task(void* pvParameters) {
             humidity_read(&tdata.temp_dht, &tdata.hum_dht);
             pressure = tdata.pressure_bmp;
             
-            // Calculate BMP280 Altitude
-            bmp_altitude = 44330.0f * (1.0f - pow(pressure / 1013.25f, 0.1903f));
+            // Get BMP280 Relative Altitude in cm
+            bmp_altitude = barometer_get_relative_altitude() * 100.0f;
             
             if (distance > 0 && distance < 500.0f) {
                 tdata.altitude = distance; // Altitude = HY-SRF05
@@ -55,7 +55,7 @@ void telemetry_tx_task(void* pvParameters) {
                 // BMP280 Measures Pressure Only To Calculate Altitude
                 float dummy_temp;
                 barometer_read(&dummy_temp, &pressure);
-                bmp_altitude = 44330.0f * (1.0f - pow(pressure / 1013.25f, 0.1903f));
+                bmp_altitude = barometer_get_relative_altitude() * 100.0f;
                 tdata.altitude = bmp_altitude; // Altitude = BMP280
             }
             

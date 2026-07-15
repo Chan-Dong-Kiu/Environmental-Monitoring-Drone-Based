@@ -2,12 +2,12 @@
 #define GCS_CONFIG_H
 
 // WiFi Credentials (User must update these)
-#define WIFI_SSID "YOUR_WIFI_SSID"
-#define WIFI_PASS "YOUR_WIFI_PASSWORD"
+#define WIFI_SSID "CHAGIA"
+#define WIFI_PASS "dondon28"
 
 // ThingSpeak settings
 #define TS_CHANNEL_ID 3416416
-#define TS_WRITE_API_KEY "IL8JU2V2EZR1ROIG"
+#define TS_WRITE_API_KEY "QMX3PHK27QMXA7QO"
 
 // HC-12 Radio Pins
 #define HC12_TX_PIN 17

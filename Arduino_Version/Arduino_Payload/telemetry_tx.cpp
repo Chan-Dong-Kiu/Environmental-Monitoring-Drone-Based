@@ -38,7 +38,7 @@ void telemetry_tx_task(void* pvParameters) {
             }
             
             Serial.println("--- SENSOR DATA (ENV ON) ---");
-            Serial.print("BMP280  - Temp: "); Serial.print(tdata.temp_bmp); Serial.print(" C, Press: "); Serial.print(tdata.pressure_bmp); Serial.println(" hPa");
+            Serial.print("BMP280  - Temp: "); Serial.print(tdata.temp_bmp); Serial.print(" C, Press: "); Serial.print(tdata.pressure_bmp); Serial.println(" Pa");
             Serial.print("DHT11   - Temp: "); Serial.print(tdata.temp_dht); Serial.print(" C, Hum: "); Serial.print(tdata.hum_dht); Serial.println(" %");
             Serial.print("Altitude: "); Serial.print(tdata.altitude); Serial.println(distance < 500.0f ? " cm (SRF05)" : " cm (BMP280)");
             Serial.println("-------------------");

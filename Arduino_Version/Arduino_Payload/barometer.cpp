@@ -29,7 +29,7 @@ bool barometer_init() {
 
 void barometer_read(float* temp, float* pressure) {
     *temp = bmp.readTemperature();
-    *pressure = bmp.readPressure() / 100.0f; // Chuyển từ Pa sang hPa
+    *pressure = bmp.readPressure(); // Trả về đơn vị chuẩn Pascal (Pa)
 }
 
 float barometer_get_relative_altitude() {

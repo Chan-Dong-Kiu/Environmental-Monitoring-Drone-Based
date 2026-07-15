@@ -14,19 +14,30 @@ void thingspeak_update(TelemetryData data) {
     // ThingSpeak rate limit is 15 seconds.
     if (millis() - last_ts_update < 15000) return;
     
-    ThingSpeak.setField(1, data.temp_bmp);
-    ThingSpeak.setField(2, data.pressure_bmp);
-    ThingSpeak.setField(3, data.temp_dht);
-    ThingSpeak.setField(4, data.hum_dht);
-    ThingSpeak.setField(5, data.altitude);
+    if (WiFi.status() != WL_CONNECTED) {
+        Serial.println("[ERROR] Cannot update ThingSpeak. WiFi is disconnected!");
+        last_ts_update = millis(); // Reset to avoid spamming
+        return;
+    }
+    
+    Serial.println("[INFO] Attempting to push data to ThingSpeak...");
+    
+    ThingSpeak.setField(1, data.temp_bmp > 0 ? data.temp_bmp : data.temp_dht); // Temperature
+    ThingSpeak.setField(2, data.pressure_bmp); // Pressure
+    ThingSpeak.setField(3, data.altitude); // Height
+    ThingSpeak.setField(4, data.hum_dht); // Humidity
     
     int x = ThingSpeak.writeFields(TS_CHANNEL_ID, TS_WRITE_API_KEY);
     if(x == 200){
-        Serial.println("Channel update successful.");
+        Serial.println("[SUCCESS] ThingSpeak channel updated successfully!");
         last_ts_update = millis();
     }
     else {
-        Serial.println("Problem updating channel. HTTP error code " + String(x));
+        Serial.print("[ERROR] Problem updating ThingSpeak. HTTP error code: ");
+        Serial.println(x);
+        if (x == -301) Serial.println("-> Hint: Lỗi sai Channel ID hoặc API Key.");
+        else if (x == -304) Serial.println("-> Hint: Lỗi Rate Limit (Gửi quá 15s/lần).");
+        last_ts_update = millis();
     }
 }
 

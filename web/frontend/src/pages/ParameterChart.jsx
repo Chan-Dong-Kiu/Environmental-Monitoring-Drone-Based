@@ -9,6 +9,24 @@ const TIME_FILTERS = [
   { label: '1 Giờ', value: 60 }
 ];
 
+const calculateDomain = ([dataMin, dataMax]) => {
+  if (dataMin === dataMax) {
+    if (dataMin === 0) return [-10, 10];
+    return [dataMin - Math.abs(dataMin * 0.01), dataMax + Math.abs(dataMax * 0.01)]; 
+  }
+
+  const range = dataMax - dataMin;
+  const avg = (dataMax + dataMin) / 2;
+  const minimumRange = Math.abs(avg * 0.005); 
+  const effectiveRange = Math.max(range, minimumRange);
+  const padding = effectiveRange * 0.1; 
+
+  return [
+    dataMin - padding,
+    dataMax + padding
+  ];
+};
+
 export default function ParameterChart({ title, dataKey, unit, color }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,13 +44,13 @@ export default function ParameterChart({ title, dataKey, unit, color }) {
         
         if (json.data && json.data.feeds && isMounted) {
           const chartData = json.data.feeds
-            .filter(f => f[dataKey] != null)
+            .filter(f => f[dataKey] != null && !isNaN(parseFloat(f[dataKey])) && parseFloat(f[dataKey]) !== 0)
             .map(f => {
               const val = parseFloat(f[dataKey]);
               const date = new Date(f.created_at);
               return {
                 time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-                value: isNaN(val) ? 0 : val
+                value: val
               };
             });
 
@@ -137,10 +155,11 @@ export default function ParameterChart({ title, dataKey, unit, color }) {
                 minTickGap={30}
               />
               <YAxis 
-                domain={['auto', 'auto']}
+                domain={calculateDomain}
                 tick={{fill: 'var(--color-muted-foreground)', fontSize: 12}}
+                tickFormatter={(val) => val.toFixed(1)}
                 tickMargin={10}
-                width={50}
+                width={70}
               />
               <Tooltip 
                 contentStyle={{ 

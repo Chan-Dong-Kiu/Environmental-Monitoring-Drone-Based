@@ -10,6 +10,24 @@ const ICON_MAP = {
   CloudSun, CloudRain, Sun, SunDim, CloudLightning, Cloud, CloudOff
 };
 
+const calculateDomain = ([dataMin, dataMax]) => {
+  if (dataMin === dataMax) {
+    if (dataMin === 0) return [-10, 10];
+    return [dataMin - Math.abs(dataMin * 0.01), dataMax + Math.abs(dataMax * 0.01)]; 
+  }
+
+  const range = dataMax - dataMin;
+  const avg = (dataMax + dataMin) / 2;
+  const minimumRange = Math.abs(avg * 0.005); 
+  const effectiveRange = Math.max(range, minimumRange);
+  const padding = effectiveRange * 0.1; 
+
+  return [
+    dataMin - padding,
+    dataMax + padding
+  ];
+};
+
 function MiniSparkline({ dataKey, color }) {
   const [data, setData] = useState([]);
 
@@ -20,7 +38,7 @@ function MiniSparkline({ dataKey, color }) {
       .then(json => {
         if (json.data && json.data.feeds) {
           const chartData = json.data.feeds
-            .filter(f => f[dataKey] != null)
+            .filter(f => f[dataKey] != null && !isNaN(parseFloat(f[dataKey])) && parseFloat(f[dataKey]) !== 0)
             .map((f, i) => ({ index: i, value: parseFloat(f[dataKey]) }));
           setData(chartData);
         }
@@ -34,7 +52,7 @@ function MiniSparkline({ dataKey, color }) {
     <div className="h-12 w-full">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data}>
-          <YAxis domain={['auto', 'auto']} hide />
+          <YAxis domain={calculateDomain} hide />
           <Line type="monotone" dataKey="value" stroke={color} strokeWidth={2} dot={false} />
         </LineChart>
       </ResponsiveContainer>

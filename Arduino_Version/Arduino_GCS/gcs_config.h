@@ -2,8 +2,8 @@
 #define GCS_CONFIG_H
 
 // WiFi Credentials (User must update these)
-#define WIFI_SSID "CHAGIA"
-#define WIFI_PASS "dondon28"
+#define WIFI_SSID "Chan Don"
+#define WIFI_PASS "xinchaonha"
 
 // ThingSpeak settings
 #define TS_CHANNEL_ID 3416416

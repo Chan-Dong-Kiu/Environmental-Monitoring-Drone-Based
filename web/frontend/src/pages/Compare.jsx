@@ -9,6 +9,24 @@ const PARAMETERS = [
   { id: 'field2', name: 'Áp suất', unit: 'Pa', color: '#8b5cf6' },
 ];
 
+const calculateDomain = ([dataMin, dataMax]) => {
+  if (dataMin === dataMax) {
+    if (dataMin === 0) return [-10, 10];
+    return [dataMin - Math.abs(dataMin * 0.01), dataMax + Math.abs(dataMax * 0.01)]; 
+  }
+
+  const range = dataMax - dataMin;
+  const avg = (dataMax + dataMin) / 2;
+  const minimumRange = Math.abs(avg * 0.005); 
+  const effectiveRange = Math.max(range, minimumRange);
+  const padding = effectiveRange * 0.1; 
+
+  return [
+    dataMin - padding,
+    dataMax + padding
+  ];
+};
+
 export default function Compare() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,7 +44,9 @@ export default function Compare() {
         
         if (json.data && json.data.feeds && isMounted) {
           const chartData = json.data.feeds
-            .filter(f => f[param1.id] != null && f[param2.id] != null)
+            .filter(f => f[param1.id] != null && f[param2.id] != null 
+              && !isNaN(parseFloat(f[param1.id])) && !isNaN(parseFloat(f[param2.id]))
+              && parseFloat(f[param1.id]) !== 0 && parseFloat(f[param2.id]) !== 0)
             .map(f => {
               return {
                 time: new Date(f.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -107,14 +127,20 @@ export default function Compare() {
               
               <YAxis 
                 yAxisId="left"
+                domain={calculateDomain}
+                tickFormatter={(val) => val.toFixed(1)}
                 tick={{fill: param1.color, fontSize: 12}} 
                 tickMargin={10}
+                width={65}
               />
               <YAxis 
                 yAxisId="right" 
                 orientation="right" 
+                domain={calculateDomain}
+                tickFormatter={(val) => val.toFixed(1)}
                 tick={{fill: param2.color, fontSize: 12}} 
                 tickMargin={10}
+                width={65}
               />
               
               <Tooltip 

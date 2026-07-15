@@ -67,7 +67,7 @@ export default function Overview() {
   };
 
   const getPressureColor = (val) => {
-    // Áp suất chuẩn khoảng 1013 hPa
+    // Áp suất chuẩn khoảng 101325 Pa
     if (val == null) return { text: "text-gray-500", bg: "bg-gray-100 dark:bg-gray-800" };
     return { text: "text-purple-600 dark:text-purple-500", bg: "bg-purple-50 dark:bg-purple-950/20" };
   };
@@ -120,7 +120,7 @@ export default function Overview() {
         <ValueCard 
           title="Áp suất" 
           value={pressure} 
-          unit="hPa" 
+          unit="Pa" 
           icon={Gauge} 
           colorClass={pColor.text}
           bgColorClass={pColor.bg}

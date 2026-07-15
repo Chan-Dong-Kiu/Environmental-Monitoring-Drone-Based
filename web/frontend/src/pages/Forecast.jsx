@@ -160,7 +160,7 @@ export default function Forecast() {
         <div className="grid gap-4">
           {renderTrendRow("Nhiệt độ", forecast.current.temperature, "°C", "field1", "#ef4444", forecast.trends.temperature)}
           {renderTrendRow("Độ ẩm", forecast.current.humidity, "%", "field4", "#3b82f6", forecast.trends.humidity)}
-          {renderTrendRow("Áp suất", forecast.current.pressure, "hPa", "field2", "#8b5cf6", forecast.trends.pressure)}
+          {renderTrendRow("Áp suất", forecast.current.pressure, "Pa", "field2", "#8b5cf6", forecast.trends.pressure)}
         </div>
       </div>
 

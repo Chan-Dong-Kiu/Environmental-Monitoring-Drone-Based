@@ -6,7 +6,7 @@ import { cn } from '../components/Navbar';
 const PARAMETERS = [
   { id: 'field1', name: 'Nhiệt độ', unit: '°C', color: '#ef4444' },
   { id: 'field4', name: 'Độ ẩm', unit: '%', color: '#3b82f6' },
-  { id: 'field2', name: 'Áp suất', unit: 'hPa', color: '#8b5cf6' },
+  { id: 'field2', name: 'Áp suất', unit: 'Pa', color: '#8b5cf6' },
 ];
 
 export default function Compare() {

@@ -15,7 +15,7 @@ function App() {
             <Route path="/" element={<Overview />} />
             <Route path="/temperature" element={<ParameterChart title="Nhiệt độ" dataKey="field1" unit="°C" color="#ef4444" />} />
             <Route path="/humidity" element={<ParameterChart title="Độ ẩm" dataKey="field4" unit="%" color="#3b82f6" />} />
-            <Route path="/pressure" element={<ParameterChart title="Áp suất" dataKey="field2" unit="hPa" color="#8b5cf6" />} />
+            <Route path="/pressure" element={<ParameterChart title="Áp suất" dataKey="field2" unit="Pa" color="#8b5cf6" />} />
             <Route path="/compare" element={<Compare />} />
             <Route path="/forecast" element={<Forecast />} />
           </Routes>

@@ -14,9 +14,16 @@ void setup() {
   Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
   
   unsigned status;
-  status = bmp.begin(0x76); // Standard I2C address for BMP280, can be 0x77
+  status = bmp.begin(0x76); // Try typical address 0x76
   if (!status) {
-    Serial.println(F("Could not find a valid BMP280 sensor, check wiring or I2C address!"));
+    Serial.println(F("Address 0x76 failed, trying 0x77..."));
+    status = bmp.begin(0x77); // Try alternative address 0x77
+  }
+  
+  if (!status) {
+    Serial.println(F("Could not find a valid BMP280 sensor!"));
+    Serial.println(F("1. Kiểm tra lại xem đã cắm SCL vào Pin 22 và SDA vào Pin 21 chưa?"));
+    Serial.println(F("2. Kiểm tra dây VCC (3.3V) và GND."));
     while (1) delay(10);
   }
 

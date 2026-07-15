@@ -7,7 +7,7 @@ Adafruit_BMP280 bmp;
 
 bool barometer_init() {
     Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
-    if (!bmp.begin(0x76)) {
+    if (!bmp.begin(0x76) && !bmp.begin(0x77)) {
         return false;
     }
     bmp.setSampling(Adafruit_BMP280::MODE_NORMAL,

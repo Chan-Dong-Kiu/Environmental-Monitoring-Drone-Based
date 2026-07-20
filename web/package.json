@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"npm run dev --prefix frontend\" \"node backend/server.js\""
+    "dev": "concurrently \"npm run dev --prefix frontend\" \"node backend/server.js\" \"npx localtunnel --port 5173 --subdomain env-drone-102\""
   },
   "keywords": [],
   "author": "",

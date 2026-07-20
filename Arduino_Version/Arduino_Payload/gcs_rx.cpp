@@ -16,6 +16,12 @@ void gcs_rx_task(void* pvParameters) {
     GCSCommand cmd;
     while(1) {
         if (HC12Serial.available() >= sizeof(GCSCommand)) {
+            // Sync frame: cmd_type must be 1. If not, drop 1 byte and try again.
+            if (HC12Serial.peek() != 1) {
+                HC12Serial.read(); 
+                continue;
+            }
+
             HC12Serial.readBytes((uint8_t*)&cmd, sizeof(GCSCommand));
             
             // Forward flight commands to FC
@@ -33,10 +39,7 @@ void gcs_rx_task(void* pvParameters) {
             }
             g_env_mode = cmd.env_mode;
             
-            // Clear backlog if any
-            while(HC12Serial.available()) {
-                HC12Serial.read();
-            }
+            // DO NOT clear backlog. Let the UART buffer handle incoming bytes.
         }
         vTaskDelay(pdMS_TO_TICKS(10)); // Yield
     }

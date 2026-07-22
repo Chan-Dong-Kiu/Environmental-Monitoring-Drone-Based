@@ -1,8 +1,7 @@
 #include <Arduino.h>
-#include "wifi_manager.h"
-#include "thingspeak_client.h"
-#include "web_server.h"
 #include "link_manager.h"
+#include <ArduinoJson.h>
+
 /*
  * =========================================================
  * HARDWARE WIRING WARNING (HC-12)
@@ -16,50 +15,30 @@
  * =========================================================
  */
 
-void thingspeak_task(void* pvParameters) {
-    while(1) {
-        TelemetryData tdata = link_manager_get_telemetry();
-        // thingspeak_update already has a 15-second rate limit built in.
-        // It will only execute the HTTP request if 15 seconds have passed.
-        thingspeak_update(tdata);
-        
-        vTaskDelay(pdMS_TO_TICKS(1000)); // Check every 1 second
-    }
-}
-
 void setup() {
+    // We use 115200 baud for USB Serial connection to the Node.js backend
     Serial.begin(115200);
-    Serial.println("================================");
-    Serial.println("     GCS SYSTEM STARTING...     ");
-    Serial.println("================================");
     
-    wifi_init();
-    if (wifi_is_connected()) {
-        thingspeak_init();
-        Serial.println("[OK] ThingSpeak Client Initialized");
-    } else {
-        Serial.println("[ERROR] ThingSpeak disabled due to WiFi failure");
-    }
+    // Send a startup message as a JSON object so the Node.js backend can parse it safely
+    StaticJsonDocument<256> doc;
+    doc["type"] = "log";
+    doc["message"] = "GCS SYSTEM STARTING... USB RADIO BRIDGE MODE ENABLED";
+    serializeJson(doc, Serial);
+    Serial.println();
     
     link_manager_init();
-    Serial.println("[OK] Payload HC-12 Radio Initialized");
     
-    web_server_init();
-    Serial.println("System Ready. Starting FreeRTOS Tasks...");
+    doc["message"] = "Payload HC-12 Radio Initialized";
+    serializeJson(doc, Serial);
+    Serial.println();
     
-    // Start ThingSpeak Task on Core 0 (Network Core)
-    xTaskCreatePinnedToCore(
-        thingspeak_task, 
-        "THINGSPEAK_TASK", 
-        4096, 
-        NULL, 
-        1, 
-        NULL, 
-        0); // Core 0
+    doc["message"] = "System Ready. Operating as USB Radio Bridge.";
+    serializeJson(doc, Serial);
+    Serial.println();
 }
 
 void loop() {
     link_manager_update();
-    delay(10);
+    // Do NOT use blocking delays here!
+    // delay(10) is removed to ensure maximum UART throughput.
 }
-

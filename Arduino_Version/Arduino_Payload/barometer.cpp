@@ -27,14 +27,24 @@ bool barometer_init() {
     return true;
 }
 
+void recover_i2c() {
+    Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
+    if (bmp.begin(0x76) || bmp.begin(0x77)) {
+        bmp.setSampling(Adafruit_BMP280::MODE_NORMAL,
+                        Adafruit_BMP280::SAMPLING_X2,
+                        Adafruit_BMP280::SAMPLING_X16,
+                        Adafruit_BMP280::FILTER_X16,
+                        Adafruit_BMP280::STANDBY_MS_500);
+    }
+}
+
 void barometer_read(float* temp, float* pressure) {
     *temp = bmp.readTemperature();
     *pressure = bmp.readPressure(); // Trả về đơn vị chuẩn Pascal (Pa)
     
     // Auto-recovery if I2C bus crashes (returns nan)
     if (isnan(*temp) || isnan(*pressure)) {
-        Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
-        bmp.begin(0x76);
+        recover_i2c();
     }
 }
 
@@ -43,8 +53,7 @@ float barometer_get_relative_altitude() {
     
     // Auto-recovery if I2C bus crashes (returns nan)
     if (isnan(current_alt)) {
-        Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
-        bmp.begin(0x76);
+        recover_i2c();
         return 0.0f; // Trả về 0 tạm thời để không bị lỗi nan lan truyền
     }
     

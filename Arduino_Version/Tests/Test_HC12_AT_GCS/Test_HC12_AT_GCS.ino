@@ -19,8 +19,8 @@ void setup() {
 void loop() {
   if (millis() - last_send > 2000) {
     last_send = millis();
-    HC12Serial.print("AT");
-    Serial.println("-> Sent: AT");
+    HC12Serial.print("AT+DEFAULT");
+    Serial.println("-> Sent: AT+DEFAULT");
   }
 
   if (HC12Serial.available()) {

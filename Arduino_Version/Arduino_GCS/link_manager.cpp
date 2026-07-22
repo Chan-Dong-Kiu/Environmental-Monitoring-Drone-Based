@@ -28,8 +28,9 @@ void link_manager_update() {
         last_rx_time = millis();
         if (last_rx_time == 0) last_rx_time = 1; // prevent 0
         
-        // Push to ThingSpeak
-        thingspeak_update(tdata);
+        // DO NOT Push to ThingSpeak synchronously here!
+        // It is now handled asynchronously by a FreeRTOS task in Arduino_GCS.ino
+        // to prevent network timeouts (-304) from freezing the HC-12 radio.
         
         // DO NOT clear backlog here!
     }

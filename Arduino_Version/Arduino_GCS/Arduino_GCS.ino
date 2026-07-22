@@ -16,6 +16,17 @@
  * =========================================================
  */
 
+void thingspeak_task(void* pvParameters) {
+    while(1) {
+        TelemetryData tdata = link_manager_get_telemetry();
+        // thingspeak_update already has a 15-second rate limit built in.
+        // It will only execute the HTTP request if 15 seconds have passed.
+        thingspeak_update(tdata);
+        
+        vTaskDelay(pdMS_TO_TICKS(1000)); // Check every 1 second
+    }
+}
+
 void setup() {
     Serial.begin(115200);
     Serial.println("================================");
@@ -34,7 +45,17 @@ void setup() {
     Serial.println("[OK] Payload HC-12 Radio Initialized");
     
     web_server_init();
-    Serial.println("System Ready. Entering main loop...");
+    Serial.println("System Ready. Starting FreeRTOS Tasks...");
+    
+    // Start ThingSpeak Task on Core 0 (Network Core)
+    xTaskCreatePinnedToCore(
+        thingspeak_task, 
+        "THINGSPEAK_TASK", 
+        4096, 
+        NULL, 
+        1, 
+        NULL, 
+        0); // Core 0
 }
 
 void loop() {

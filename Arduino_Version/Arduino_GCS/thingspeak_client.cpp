@@ -36,7 +36,7 @@ void thingspeak_update(TelemetryData data) {
         Serial.print("[ERROR] Problem updating ThingSpeak. HTTP error code: ");
         Serial.println(x);
         if (x == -301) Serial.println("-> Hint: Lỗi sai Channel ID hoặc API Key.");
-        else if (x == -304) Serial.println("-> Hint: Lỗi Rate Limit (Gửi quá 15s/lần).");
+        else if (x == -304) Serial.println("-> Hint: Lỗi Timeout (Mạng yếu, chập chờn hoặc rớt mạng).");
         last_ts_update = millis();
     }
 }

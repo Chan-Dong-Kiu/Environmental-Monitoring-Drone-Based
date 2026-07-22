@@ -42,8 +42,8 @@ void barometer_read(float* temp, float* pressure) {
     *temp = bmp.readTemperature();
     *pressure = bmp.readPressure(); // Trả về đơn vị chuẩn Pascal (Pa)
     
-    // Auto-recovery if I2C bus crashes (returns nan)
-    if (isnan(*temp) || isnan(*pressure)) {
+    // Auto-recovery if I2C bus crashes (returns nan or 0 pressure)
+    if (isnan(*temp) || isnan(*pressure) || *pressure == 0.0f) {
         recover_i2c();
     }
 }
@@ -51,10 +51,10 @@ void barometer_read(float* temp, float* pressure) {
 float barometer_get_relative_altitude() {
     float current_alt = bmp.readAltitude(1013.25f);
     
-    // Auto-recovery if I2C bus crashes (returns nan)
-    if (isnan(current_alt)) {
+    // Auto-recovery if I2C bus crashes (returns nan or 44330m)
+    if (isnan(current_alt) || current_alt >= 44000.0f || current_alt <= -2000.0f) {
         recover_i2c();
-        return 0.0f; // Trả về 0 tạm thời để không bị lỗi nan lan truyền
+        return 0.0f; // Trả về 0 tạm thời để không bị lỗi số ảo lan truyền
     }
     
     return current_alt - base_altitude;

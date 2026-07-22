@@ -45,6 +45,13 @@ void link_manager_update() {
 }
 
 void link_manager_send_cmd(GCSCommand cmd) {
+    // [RF Collision Avoidance]
+    // If HC12 is currently receiving telemetry from Payload, wait briefly before transmitting.
+    // This prevents GCS from talking over the Payload in half-duplex mode.
+    if (HC12Serial.available() > 0) {
+        delay(20); // Briefly wait for incoming bytes to finish parsing
+    }
+    
     HC12Serial.write((uint8_t*)&cmd, sizeof(GCSCommand));
     // We send commands constantly (every 100ms), so printing here might spam. 
     // We will only print if it's an atomizer toggle or env mode toggle to reduce spam.

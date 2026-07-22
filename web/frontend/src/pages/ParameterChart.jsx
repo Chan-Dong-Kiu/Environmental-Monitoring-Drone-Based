@@ -4,9 +4,9 @@ import { Loader2 } from 'lucide-react';
 import { cn } from '../components/Navbar';
 
 const TIME_FILTERS = [
-  { label: '5 Phút', value: 5 },
-  { label: '15 Phút', value: 15 },
-  { label: '1 Giờ', value: 60 }
+  { label: '5 Mins', value: 5 },
+  { label: '15 Mins', value: 15 },
+  { label: '1 Hour', value: 60 }
 ];
 
 const calculateDomain = ([dataMin, dataMax]) => {
@@ -96,8 +96,8 @@ export default function ParameterChart({ title, dataKey, unit, color }) {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Biểu đồ {title}</h1>
-          <p className="text-(--color-muted-foreground)">Theo dõi biến động {title.toLowerCase()} theo thời gian</p>
+          <h1 className="text-2xl font-bold tracking-tight">{title} Chart</h1>
+          <p className="text-(--color-muted-foreground)">Track {title.toLowerCase()} changes over time</p>
         </div>
         
         <div className="flex bg-(--color-muted) p-1 rounded-lg">
@@ -120,15 +120,15 @@ export default function ParameterChart({ title, dataKey, unit, color }) {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="p-4 rounded-xl border border-(--color-border) bg-(--color-card) shadow-sm flex flex-col">
-          <span className="text-sm font-medium text-(--color-muted-foreground)">Cao nhất</span>
+          <span className="text-sm font-medium text-(--color-muted-foreground)">Highest</span>
           <span className="text-2xl font-bold text-red-500">{stats.max} <span className="text-sm">{unit}</span></span>
         </div>
         <div className="p-4 rounded-xl border border-(--color-border) bg-(--color-card) shadow-sm flex flex-col">
-          <span className="text-sm font-medium text-(--color-muted-foreground)">Trung bình</span>
+          <span className="text-sm font-medium text-(--color-muted-foreground)">Average</span>
           <span className="text-2xl font-bold text-blue-500">{stats.avg} <span className="text-sm">{unit}</span></span>
         </div>
         <div className="p-4 rounded-xl border border-(--color-border) bg-(--color-card) shadow-sm flex flex-col">
-          <span className="text-sm font-medium text-(--color-muted-foreground)">Thấp nhất</span>
+          <span className="text-sm font-medium text-(--color-muted-foreground)">Lowest</span>
           <span className="text-2xl font-bold text-teal-500">{stats.min} <span className="text-sm">{unit}</span></span>
         </div>
       </div>
@@ -142,7 +142,7 @@ export default function ParameterChart({ title, dataKey, unit, color }) {
         
         {data.length === 0 && !loading ? (
           <div className="flex h-full items-center justify-center text-(--color-muted-foreground)">
-            Không có dữ liệu trong khoảng thời gian này
+            No data available in this timeframe
           </div>
         ) : (
           <ResponsiveContainer width="100%" height="100%">

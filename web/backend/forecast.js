@@ -65,7 +65,7 @@ function predictWeather(feedData) {
   
   if (!analysis) {
     return {
-      status: "Chưa đủ dữ liệu để nhận định rõ",
+      status: "Insufficient data for clear assessment",
       icon: "CloudOff", // Tên icon Lucide
       confidence: "Low",
       trends: null,
@@ -76,17 +76,17 @@ function predictWeather(feedData) {
   const { trends, currentValues, timeSpanHours } = analysis;
   const confidence = evaluateConfidence(feedData, timeSpanHours);
 
-  let status = "Thời tiết ổn định";
+  let status = "Stable Weather";
   let icon = "Sun"; // Mặc định nắng đẹp / ổn định
 
   // Áp suất giảm nhanh VÀ độ ẩm tăng -> "Khả năng có mưa"
   if (trends.pressure < THRESHOLDS.PRESSURE_DROP_FAST && trends.humidity > THRESHOLDS.HUMIDITY_RISE) {
-    status = "Khả năng có mưa";
+    status = "Chance of Rain";
     icon = "CloudRain";
   } 
   // Áp suất tăng VÀ độ ẩm giảm -> "Trời quang dần"
   else if (trends.pressure > THRESHOLDS.PRESSURE_RISE_FAST && trends.humidity < 0) {
-    status = "Trời quang dần";
+    status = "Clearing Up";
     icon = "SunDim";
   } 
   // Áp suất ổn định VÀ nhiệt độ cao VÀ độ ẩm cao -> "Oi bức, có thể có giông vào chiều/tối"
@@ -95,12 +95,12 @@ function predictWeather(feedData) {
     currentValues.temperature > THRESHOLDS.TEMP_HIGH && 
     currentValues.humidity > THRESHOLDS.HUMIDITY_HIGH
   ) {
-    status = "Oi bức, có thể có giông";
+    status = "Muggy, Chance of Thunderstorms";
     icon = "CloudLightning";
   }
   // Các trường hợp khác: Nếu áp suất thay đổi nhẹ nhưng không rõ rệt
   else if (Math.abs(trends.pressure) > THRESHOLDS.PRESSURE_STABLE) {
-    status = "Thời tiết đang chuyển biến";
+    status = "Weather is Changing";
     icon = "Cloud";
   }
 

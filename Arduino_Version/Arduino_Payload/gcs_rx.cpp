@@ -14,6 +14,8 @@ void gcs_rx_init() {
 
 void gcs_rx_task(void* pvParameters) {
     GCSCommand cmd;
+    uint32_t last_rx_time = 0;
+    uint32_t last_print_time = 0;
     while(1) {
         if (HC12Serial.available() >= sizeof(GCSCommand)) {
             // Sync frame: cmd_type must be 1. If not, drop 1 byte and try again.
@@ -39,8 +41,16 @@ void gcs_rx_task(void* pvParameters) {
             }
             g_env_mode = cmd.env_mode;
             
+            last_rx_time = millis();
             // DO NOT clear backlog. Let the UART buffer handle incoming bytes.
         }
+
+        // Print warning if no signal for 3 seconds
+        if (millis() - last_rx_time > 3000 && millis() - last_print_time > 3000) {
+            Serial.println("[WARNING] HC-12 connection lost! No signal from GCS.");
+            last_print_time = millis();
+        }
+
         vTaskDelay(pdMS_TO_TICKS(10)); // Yield
     }
 }

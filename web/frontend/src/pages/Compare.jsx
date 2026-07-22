@@ -4,9 +4,9 @@ import { Loader2 } from 'lucide-react';
 import { cn } from '../components/Navbar';
 
 const PARAMETERS = [
-  { id: 'field1', name: 'Nhiệt độ', unit: '°C', color: '#ef4444' },
-  { id: 'field4', name: 'Độ ẩm', unit: '%', color: '#3b82f6' },
-  { id: 'field2', name: 'Áp suất', unit: 'Pa', color: '#8b5cf6' },
+  { id: 'field1', name: 'Temperature', unit: '°C', color: '#ef4444' },
+  { id: 'field4', name: 'Humidity', unit: '%', color: '#3b82f6' },
+  { id: 'field2', name: 'Pressure', unit: 'Pa', color: '#8b5cf6' },
 ];
 
 const calculateDomain = ([dataMin, dataMax]) => {
@@ -74,13 +74,13 @@ export default function Compare() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">So sánh Thông số</h1>
-        <p className="text-(--color-muted-foreground)">Phân tích sự tương quan giữa 2 thông số môi trường (30 phút gần nhất)</p>
+        <h1 className="text-2xl font-bold tracking-tight">Compare Parameters</h1>
+        <p className="text-(--color-muted-foreground)">Analyze the correlation between 2 environmental parameters (Last 30 minutes)</p>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4 p-4 rounded-xl border border-(--color-border) bg-(--color-card) shadow-sm">
         <div className="flex-1 space-y-2">
-          <label className="text-sm font-medium">Thông số 1 (Trục trái)</label>
+          <label className="text-sm font-medium">Parameter 1 (Left Axis)</label>
           <select 
             className="w-full p-2 rounded-md border border-(--color-border) bg-(--color-background) outline-none focus:border-(--color-primary)"
             value={param1.id}
@@ -95,7 +95,7 @@ export default function Compare() {
           <span className="text-(--color-muted-foreground) font-medium">VS</span>
         </div>
         <div className="flex-1 space-y-2">
-          <label className="text-sm font-medium">Thông số 2 (Trục phải)</label>
+          <label className="text-sm font-medium">Parameter 2 (Right Axis)</label>
           <select 
             className="w-full p-2 rounded-md border border-(--color-border) bg-(--color-background) outline-none focus:border-(--color-primary)"
             value={param2.id}
@@ -117,7 +117,7 @@ export default function Compare() {
 
         {data.length === 0 && !loading ? (
           <div className="flex h-full items-center justify-center text-(--color-muted-foreground)">
-            Không có dữ liệu
+            No data available
           </div>
         ) : (
           <ResponsiveContainer width="100%" height="100%">

@@ -9,12 +9,12 @@ export function cn(...inputs) {
 }
 
 const navItems = [
-  { path: '/', label: 'Tổng quan', icon: LayoutDashboard },
-  { path: '/temperature', label: 'Nhiệt độ', icon: Thermometer },
-  { path: '/humidity', label: 'Độ ẩm', icon: Droplets },
-  { path: '/pressure', label: 'Áp suất', icon: Gauge },
-  { path: '/compare', label: 'So sánh', icon: GitCompare },
-  { path: '/forecast', label: 'Dự đoán', icon: CloudSun },
+  { path: '/', label: 'Overview', icon: LayoutDashboard },
+  { path: '/temperature', label: 'Temperature', icon: Thermometer },
+  { path: '/humidity', label: 'Humidity', icon: Droplets },
+  { path: '/pressure', label: 'Pressure', icon: Gauge },
+  { path: '/compare', label: 'Compare', icon: GitCompare },
+  { path: '/forecast', label: 'Forecast', icon: CloudSun },
 ];
 
 export default function Navbar() {

@@ -40,7 +40,7 @@ export default function Overview() {
       setError(null);
     } catch (err) {
       console.error(err);
-      setError("Không thể tải dữ liệu từ server.");
+      setError("Failed to load data from server.");
     } finally {
       setLoading(false);
     }
@@ -85,12 +85,12 @@ export default function Overview() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Tổng quan Hệ thống</h1>
-          <p className="text-(--color-muted-foreground)">Giám sát dữ liệu môi trường theo thời gian thực</p>
+          <h1 className="text-2xl font-bold tracking-tight">System Overview</h1>
+          <p className="text-(--color-muted-foreground)">Real-time environmental monitoring data</p>
         </div>
         <div className="flex items-center gap-2 text-sm text-(--color-muted-foreground)">
           {loading && <RefreshCw className="w-4 h-4 animate-spin" />}
-          {lastUpdate ? `Cập nhật: ${lastUpdate}` : 'Đang lấy dữ liệu...'}
+          {lastUpdate ? `Last updated: ${lastUpdate}` : 'Fetching data...'}
         </div>
       </div>
 
@@ -102,7 +102,7 @@ export default function Overview() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <ValueCard 
-          title="Nhiệt độ" 
+          title="Temperature" 
           value={temp} 
           unit="°C" 
           icon={Thermometer} 
@@ -110,7 +110,7 @@ export default function Overview() {
           bgColorClass={tColor.bg}
         />
         <ValueCard 
-          title="Độ ẩm" 
+          title="Humidity" 
           value={humidity} 
           unit="%" 
           icon={Droplets} 
@@ -118,7 +118,7 @@ export default function Overview() {
           bgColorClass={hColor.bg}
         />
         <ValueCard 
-          title="Áp suất" 
+          title="Pressure" 
           value={pressure} 
           unit="Pa" 
           icon={Gauge} 
@@ -126,7 +126,7 @@ export default function Overview() {
           bgColorClass={pColor.bg}
         />
         <ValueCard 
-          title="Độ cao" 
+          title="Height" 
           value={height} 
           unit="m" 
           icon={ArrowUpFromLine} 
@@ -136,13 +136,13 @@ export default function Overview() {
       </div>
 
       <div className="mt-8 p-6 rounded-2xl border border-(--color-border) bg-(--color-card) shadow-sm">
-        <h3 className="font-semibold text-lg mb-4">Trạng thái hệ thống</h3>
+        <h3 className="font-semibold text-lg mb-4">System Status</h3>
         <div className="flex items-center gap-3">
           <div className="relative flex h-3 w-3">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
           </div>
-          <span className="text-sm font-medium">Kết nối ThingSpeak hoạt động ổn định (Polling 10s)</span>
+          <span className="text-sm font-medium">ThingSpeak connection is stable (Polling 10s)</span>
         </div>
       </div>
     </div>

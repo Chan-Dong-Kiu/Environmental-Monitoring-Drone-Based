@@ -13,11 +13,10 @@ extern HardwareSerial HC12Serial; // Declared in gcs_rx.cpp
 void telemetry_tx_task(void* pvParameters) {
     while(1) {
         // [RF Collision Avoidance]
-        // If HC12 is currently receiving data from GCS, wait before transmitting.
-        // This prevents the Payload from talking over the GCS in half-duplex mode.
+        // If HC12 is currently receiving data from GCS, wait briefly to let it finish.
+        // We do NOT use 'continue' here, otherwise a single byte of noise will permanently deadlock transmission!
         if (HC12Serial.available() > 0) {
             vTaskDelay(pdMS_TO_TICKS(50));
-            continue;
         }
 
         TelemetryData tdata;

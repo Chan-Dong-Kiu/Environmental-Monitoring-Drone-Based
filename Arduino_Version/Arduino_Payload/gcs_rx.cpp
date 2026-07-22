@@ -6,7 +6,7 @@
 #include <Arduino.h>
 
 HardwareSerial HC12Serial(2);
-uint8_t g_env_mode = 0;
+uint8_t g_env_mode = 1; // Default to ON so sensors send data immediately
 
 void gcs_rx_init() {
     HC12Serial.begin(9600, SERIAL_8N1, HC12_RX_PIN, HC12_TX_PIN);

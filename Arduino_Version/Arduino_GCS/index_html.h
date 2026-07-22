@@ -76,13 +76,13 @@ const char INDEX_HTML[] PROGMEM = R"=====(
   </div>
   <div class="controls">
     <button id="btn-atomizer" onclick="toggleAtomizer()">Atomizer: OFF</button>
-    <button id="btn-env" onclick="toggleEnv()" style="margin-left: 10px; background: #607d8b;">Env Mode: OFF</button>
+    <button id="btn-env" onclick="toggleEnv()" style="margin-left: 10px; background: #00e5ff; color: #000; font-weight: bold;">Env Mode: ON</button>
   </div>
   
   <script>
     let atomizerState = 0;
-    let envState = 0;
-    let cmd = { roll: 0, pitch: 0, yaw: 0, throttle: 1000, atomizer: 0, env_mode: 0 };
+    let envState = 1; // Default to ON
+    let cmd = { roll: 0, pitch: 0, yaw: 0, throttle: 1000, atomizer: 0, env_mode: 1 };
     
     function toggleAtomizer() {
       atomizerState = 1 - atomizerState;

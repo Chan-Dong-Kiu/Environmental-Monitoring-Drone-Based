@@ -66,6 +66,7 @@ void telemetry_tx_task(void* pvParameters) {
         
         tdata.atomizer_state = atomizer_get_state();
         tdata.env_mode = g_env_mode;
+        tdata.sync_byte = 0xAA;
         
         tdata.roll = 0;
         tdata.pitch = 0;

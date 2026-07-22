@@ -15,6 +15,11 @@ static TelemetryData latest_tdata;
 void link_manager_update() {
     TelemetryData tdata;
     if (HC12Serial.available() >= sizeof(TelemetryData)) {
+        if (HC12Serial.peek() != 0xAA) {
+            HC12Serial.read();
+            return; // Wait for next sync byte
+        }
+        
         HC12Serial.readBytes((uint8_t*)&tdata, sizeof(TelemetryData));
         
         latest_tdata = tdata; // Store for web UI
@@ -26,9 +31,7 @@ void link_manager_update() {
         // Push to ThingSpeak
         thingspeak_update(tdata);
         
-        while(HC12Serial.available()) {
-            HC12Serial.read();
-        }
+        // DO NOT clear backlog here!
     }
     
     // Timeout check

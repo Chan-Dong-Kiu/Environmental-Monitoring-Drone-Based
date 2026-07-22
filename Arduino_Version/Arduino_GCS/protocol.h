@@ -19,6 +19,7 @@ struct GCSCommand {
 
 // Telemetry from Payload -> GCS (via HC-12)
 struct TelemetryData {
+    uint8_t sync_byte;
     float temp_bmp;
     float pressure_bmp;
     float temp_dht;

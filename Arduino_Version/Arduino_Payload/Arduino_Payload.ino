@@ -7,6 +7,18 @@
 #include "fc_bridge.h"
 #include "gcs_rx.h"
 #include "telemetry_tx.h"
+/*
+ * =========================================================
+ * HARDWARE WIRING WARNING (HC-12)
+ * =========================================================
+ * To prevent the "only sent, not received" error or garbage data:
+ * 1. The HC-12 TX pin MUST be connected to the ESP32 RX pin (33).
+ * 2. The HC-12 RX pin MUST be connected to the ESP32 TX pin (32).
+ * Do NOT connect TX to TX or RX to RX!
+ * 3. The HC-12 VCC should be connected to the ESP32 5V (VIN) pin for stable RF power.
+ * 4. The HC-12 SET pin MUST be left completely disconnected during flight.
+ * =========================================================
+ */
 
 void setup() {
     Serial.begin(115200);

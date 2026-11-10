@@ -11,9 +11,16 @@
 extern HardwareSerial HC12Serial; // Declared in gcs_rx.cpp
 
 void telemetry_tx_task(void* pvParameters) {
-    TelemetryData tdata;
-    
     while(1) {
+        // [RF Collision Avoidance]
+        // If HC12 is currently receiving data from GCS, wait briefly to let it finish.
+        // We do NOT use 'continue' here, otherwise a single byte of noise will permanently deadlock transmission!
+        if (HC12Serial.available() > 0) {
+            vTaskDelay(pdMS_TO_TICKS(50));
+        }
+
+        TelemetryData tdata;
+        
         float distance = 0.0f;
         float pressure = 0.0f;
         float bmp_altitude = 0.0f;
@@ -28,8 +35,8 @@ void telemetry_tx_task(void* pvParameters) {
             humidity_read(&tdata.temp_dht, &tdata.hum_dht);
             pressure = tdata.pressure_bmp;
             
-            // Calculate BMP280 Altitude
-            bmp_altitude = 44330.0f * (1.0f - pow(pressure / 1013.25f, 0.1903f));
+            // Get BMP280 Relative Altitude in cm
+            bmp_altitude = barometer_get_relative_altitude() * 100.0f;
             
             if (distance > 0 && distance < 500.0f) {
                 tdata.altitude = distance; // Altitude = HY-SRF05
@@ -38,7 +45,7 @@ void telemetry_tx_task(void* pvParameters) {
             }
             
             Serial.println("--- SENSOR DATA (ENV ON) ---");
-            Serial.print("BMP280  - Temp: "); Serial.print(tdata.temp_bmp); Serial.print(" C, Press: "); Serial.print(tdata.pressure_bmp); Serial.println(" hPa");
+            Serial.print("BMP280  - Temp: "); Serial.print(tdata.temp_bmp); Serial.print(" C, Press: "); Serial.print(tdata.pressure_bmp); Serial.println(" Pa");
             Serial.print("DHT11   - Temp: "); Serial.print(tdata.temp_dht); Serial.print(" C, Hum: "); Serial.print(tdata.hum_dht); Serial.println(" %");
             Serial.print("Altitude: "); Serial.print(tdata.altitude); Serial.println(distance < 500.0f ? " cm (SRF05)" : " cm (BMP280)");
             Serial.println("-------------------");
@@ -55,7 +62,7 @@ void telemetry_tx_task(void* pvParameters) {
                 // BMP280 Measures Pressure Only To Calculate Altitude
                 float dummy_temp;
                 barometer_read(&dummy_temp, &pressure);
-                bmp_altitude = 44330.0f * (1.0f - pow(pressure / 1013.25f, 0.1903f));
+                bmp_altitude = barometer_get_relative_altitude() * 100.0f;
                 tdata.altitude = bmp_altitude; // Altitude = BMP280
             }
             
@@ -66,6 +73,7 @@ void telemetry_tx_task(void* pvParameters) {
         
         tdata.atomizer_state = atomizer_get_state();
         tdata.env_mode = g_env_mode;
+        tdata.sync_byte = 0xAA;
         
         tdata.roll = 0;
         tdata.pitch = 0;
